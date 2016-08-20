@@ -1,0 +1,11 @@
+body{
+	text-align: center;
+	font-family: "Times New Roman", Georgia, Serif;
+	color: #484D46;
+	background-color: #DBE6E0;
+}
+
+.jumbotron {
+	background-color: #9ACD32;
+	color: #484D46;
+}
