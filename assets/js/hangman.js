@@ -1,10 +1,8 @@
-// <script type="text/javascript">
 //-----------------varibles------------------------------------------
 var wins = 0;
 var losses = 0;
 var guessChances = 12;
 var wrongGuess = [];
-var correctGuessArray = [];
 var spacesArray = [];
 //word bank
 var choiceWords = ["rick", "morty", "jeez" , "summer", "jerry","beth", "meseeks", "squanchy", "plutonians", "snuffles", "snowball", "cromulons", "zigerions", "unity", "gazorpazorp", "hamurai"];
@@ -14,40 +12,52 @@ var choiceWords = ["rick", "morty", "jeez" , "summer", "jerry","beth", "meseeks"
 
  //computer picks random word
  var computerGuess = choiceWords[Math.floor(Math.random()*choiceWords.length)];
+ console.log(computerGuess);
 
  var computerGuessArray = computerGuess.split('');
-
  console.log(computerGuessArray);
+
 //document.adEventListener ("DOMContentLoaded", function(){
 //});
 
 //splice method changes _ to letters MGM
 //----------------functions------------------------------
 function reset () {
+    computerGuess = choiceWords[Math.floor(Math.random()*choiceWords.length)];
+    computerGuessArray = computerGuess.split('');
+    spacesArray = [];
+    spaceControl();
     guessChances = 12;
     wrongGuess = [];
-    var computerGuess = choiceWords[Math.floor(Math.random()*choiceWords.length)];
+    console.log("this is my reset");
+
+     var html =
+     "<p>guess this word: " + spacesArray + "</p>";
+    // //"<p>guess word: " + spaceControl(userGuess) + "</p>" +
+    // "<p>wins: " + wins +"</p>" + 
+    // "<p>losses: " + losses + "</p>" +
+    // "<p>guesses: " + guessChances + "</p>" +
+    // "<p>letters guessed: " + wrongGuess + "</p>";
+    // // Placing the html into the game 
+     document.querySelector('.hangman').innerHTML = html; //prints out var html
+
+    
 }
 
 //prints out blank spaces of computer guess
 function spaceControl (){
-for (var i = 0; i < computerGuess.length; i++){
-    spacesArray.push('_'); 
-    console.log("guess this word " + spacesArray);
+    for (var i = 0; i < computerGuess.length; i++){
+        spacesArray.push('_'); 
+        console.log("guess this word " + spacesArray);
     }
 }
 
 //check letter is in array
     function checkLetter(userGuess){
         if(computerGuessArray.indexOf(userGuess) !== -1){
-            //spacesArray = userGuess;
-            //spacesArray.push(userGuess);
-            console.log("fdhskjfds" + spacesArray);
-
             for (var i = 0; i < computerGuessArray.length; i++){
                 if (userGuess === computerGuessArray[i]) {
                     spacesArray.splice(i,1,userGuess);
-                    //spacesArray[i] === userGuess;
                     console.log("spacesArray: " + spacesArray)
                     console.log("userGuess: " + userGuess);
                 }
@@ -55,8 +65,12 @@ for (var i = 0; i < computerGuess.length; i++){
         } else if (guessChances < 1){
             //console.log("guess chances = " + guessChances);
             console.log("that\'s it! press any letter to play again.");
+            losses++;
             reset();
-        } else {
+        }  else if (guessChances < 12 && spacesArray.indexOf('_') === -1){
+            wins++;
+            reset();
+        }  else {
         //not in word
         wrongGuess.push(userGuess);
         guessChances--;
@@ -67,16 +81,19 @@ for (var i = 0; i < computerGuess.length; i++){
 
 
 //-----------------method/execution-------------------------------
-    spaceControl(computerGuessArray);
+
+spaceControl(computerGuessArray);
 
 //starts the process...
 document.onkeyup = function(event) {
+
     //takes the user's guess
     var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
-        // if (userGuess = )
+
     console.log("user guess: " + userGuess);
     console.log("computer guess: " + computerGuess);
 
+  
     checkLetter(userGuess);
 
 
@@ -87,8 +104,9 @@ document.onkeyup = function(event) {
     "<p>losses: " + losses + "</p>" +
     "<p>guesses: " + guessChances + "</p>" +
     "<p>letters guessed: " + wrongGuess + "</p>";
-    // Placing the html into the game ID
+    // Placing the html into the game 
     document.querySelector('.hangman').innerHTML = html; //prints out var html
+
 
 }
 
