@@ -4,7 +4,7 @@ var losses = 0;
 var guessChances = 12;
 var wrongGuess = [];
 var spacesArray = [];
-var choiceWords = ["rick", "morty", "jeez", "summer", "jerry", "beth", "meseeks", "squanchy", "plutonians", "snuffles", "snowball", "cromulons", "unity", "gazorpazorp"];
+var choiceWords = ["rick", "morty", "summer", "jerry", "beth", "meseeks", "squanchy", "plutonians", "snuffles", "snowball", "cromulons", "unity", "gazorpazorp"];
 
 //possible key guesses
 var alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
@@ -38,13 +38,21 @@ function spaceControl() {
     }
 }
 
+function winning () {
+    if (spacesArray.indexOf('_') === -1){
+        alert("You saved a Morty with the word: " + computerGuessArray)
+    }
+}
+
+
 //check letter is in array
 function checkLetter(userGuess) {
+    if (alphabet.indexOf(userGuess) === -1){ return;}
     if (computerGuessArray.indexOf(userGuess) !== -1) {
         for (var i = 0; i < computerGuessArray.length; i++) {
             if (userGuess === computerGuessArray[i]) {
                 spacesArray.splice(i, 1, userGuess);
-                console.log("spacesArray: " + spacesArray)
+                console.log("spacesArray: " + spacesArray);
                 console.log("userGuess: " + userGuess);
             }
         }
@@ -55,14 +63,15 @@ function checkLetter(userGuess) {
         losses++;
         reset();
 
-    } else if ((guessChances < 12) && (spacesArray.indexOf('_') === -1)) {
+    } else if (spacesArray.indexOf('_') === -1) {    
         alert("Nice you saved a Morty!!");
         wins++;
         reset();
     } else {
-        //not in word
-        wrongGuess.push(userGuess);
-        guessChances--;
+        if (!wrongGuess.includes(userGuess)){
+            wrongGuess.push(userGuess);
+            guessChances--;
+        }
         console.log(wrongGuess + " is not a right letter");
         console.log(guessChances);
     }
@@ -87,12 +96,12 @@ document.onkeyup = function(event) {
 
 
     var html =
-        "<p>guess this word: " + spacesArray + "</p>" +
+        "<p>guess this word: " + spacesArray.join(' ') + "</p>" +
         //"<p>guess word: " + spaceControl(userGuess) + "</p>" +
         "<p>wins: " + wins + "</p>" +
         "<p>losses: " + losses + "</p>" +
         "<p>guesses: " + guessChances + "</p>" +
-        "<p>letters guessed: " + wrongGuess + "</p>";
+        "<p>letters guessed: " + wrongGuess.join(' ') + "</p>";
     // Placing the html into the game 
     document.querySelector('.hangman').innerHTML = html; //prints out var html
 
